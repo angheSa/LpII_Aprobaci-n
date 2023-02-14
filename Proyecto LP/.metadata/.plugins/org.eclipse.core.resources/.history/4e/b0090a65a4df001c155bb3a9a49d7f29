@@ -1,0 +1,23 @@
+package com.contrato.dao;
+
+import java.awt.Menu;
+import java.util.List;
+
+import com.contrato.entidad.Usuario;
+import com.contrato.interfaces.UsuarioDAO;
+
+public class MySqlUsuarioDAO implements UsuarioDAO{
+
+	@Override
+	public Usuario iniciarSesion(String login, String clave) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Menu> menusPorUsuario(int codigoUsuario) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

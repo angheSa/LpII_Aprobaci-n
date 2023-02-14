@@ -1,0 +1,87 @@
+package com.contrato.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.contrato.entidad.Expediente;
+import com.contrato.entidad.Oficio;
+import com.contrato.entidad.Solicitante;
+import com.contrato.interfaces.SolicitanteDAO;
+import com.contrato.interfaces.ExpedienteDAO;
+import com.contrato.utils.MySqlConexion;
+
+public class MySqlExpedienteDAO implements ExpedienteDAO {
+
+	@Override
+	public int save(Expediente bean) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int update(Expediente bean) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int delete(int cod) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Expediente findById(int cod) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Expediente> listAll() {
+		List<Expediente> listaExpe=new ArrayList<Expediente>();
+		Expediente bean=null;
+		Connection cn=null;
+		PreparedStatement pstm=null;
+		ResultSet rs=null;
+		try {
+			//Conexion y acceder a los datos
+			cn=MySqlConexion.getConectar();
+			String sql="select *from tb_expediente";
+			pstm=cn.prepareStatement(sql);
+			rs=pstm.executeQuery();
+			
+			while(rs.next()) {
+				//Crear un objeto de Oficio
+				bean=new Expediente();
+				
+				bean.setCodExpediente(rs.getInt(1));
+				bean.setFechaExpe(rs.getString(2));
+				bean.setContratoTiempo(rs.getString(3));
+				bean.setNomSecretria(rs.getString(4));
+				bean.setCodSoli(rs.getInt(5));
+				bean.setEstadoExpe(rs.getString(6));
+				bean.setCodOficio(7);
+				listaExpe.add(bean);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstm!=null) pstm.close();
+				if(cn!=null) cn.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return listaExpe;
+	}
+
+
+}

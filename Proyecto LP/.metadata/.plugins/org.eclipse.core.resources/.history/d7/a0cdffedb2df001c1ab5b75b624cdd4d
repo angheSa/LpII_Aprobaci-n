@@ -1,0 +1,8 @@
+package com.contrato.entidad;
+
+public class Expediente {
+	//Declaración de variables
+	private int codSoli;
+	private String codExpediente,fechaExpe,codOficio,nomSecretria,idSolicitante,contratoTiempo,estadoExpe;
+	//Métodos get and set
+	}

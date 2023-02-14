@@ -1,0 +1,57 @@
+package com.contrato.entidad;
+
+public class Expediente {
+	//Declaración de variables
+	private int codSoli;
+	private String codExpediente,fechaExpe,codOficio,nomSecretria,idSolicitante,contratoTiempo,estadoExpe;
+	
+	//Métodos get and set
+	public int getCodSoli() {
+		return codSoli;
+	}
+	public void setCodSoli(int codSoli) {
+		this.codSoli = codSoli;
+	}
+	public String getCodExpediente() {
+		return codExpediente;
+	}
+	public void setCodExpediente(String codExpediente) {
+		this.codExpediente = codExpediente;
+	}
+	public String getFechaExpe() {
+		return fechaExpe;
+	}
+	public void setFechaExpe(String fechaExpe) {
+		this.fechaExpe = fechaExpe;
+	}
+	public String getCodOficio() {
+		return codOficio;
+	}
+	public void setCodOficio(String codOficio) {
+		this.codOficio = codOficio;
+	}
+	public String getNomSecretria() {
+		return nomSecretria;
+	}
+	public void setNomSecretria(String nomSecretria) {
+		this.nomSecretria = nomSecretria;
+	}
+	public String getIdSolicitante() {
+		return idSolicitante;
+	}
+	public void setIdSolicitante(String idSolicitante) {
+		this.idSolicitante = idSolicitante;
+	}
+	public String getContratoTiempo() {
+		return contratoTiempo;
+	}
+	public void setContratoTiempo(String contratoTiempo) {
+		this.contratoTiempo = contratoTiempo;
+	}
+	public String getEstadoExpe() {
+		return estadoExpe;
+	}
+	public void setEstadoExpe(String estadoExpe) {
+		this.estadoExpe = estadoExpe;
+	}
+	}

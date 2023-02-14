@@ -1,0 +1,40 @@
+package com.contrato.entidad;
+
+public class Oficio {
+	//Declaración de variables
+	private int codSoli, codOfi;
+	private String asuntoOfi,nomSecre,sexo,fechaOfi;
+	//Métodos get and set
+	public int getCodSoli() {
+		return codSoli;
+	}
+	public void setCodSoli(int codSoli) {
+		this.codSoli = codSoli;
+	}
+	
+	public String getAsuntoOfi() {
+		return asuntoOfi;
+	}
+	public void setAsuntoOfi(String asuntoOfi) {
+		this.asuntoOfi = asuntoOfi;
+	}
+	public String getNomSecre() {
+		return nomSecre;
+	}
+	public void setNomSecre(String nomSecre) {
+		this.nomSecre = nomSecre;
+	}
+	public String getSexo() {
+		return sexo;
+	}
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+	public String getFechaOfi() {
+		return fechaOfi;
+	}
+	public void setFechaOfi(String fechaOfi) {
+		this.fechaOfi = fechaOfi;
+	}
+	
+}

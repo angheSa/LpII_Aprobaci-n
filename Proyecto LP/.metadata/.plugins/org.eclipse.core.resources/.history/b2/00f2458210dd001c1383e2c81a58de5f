@@ -1,0 +1,14 @@
+package com.contrato.controlador;
+
+public class ServletBuscarSoliJSON {
+	//PASO 1: invocar al método listarCondiciones
+			List<Solicitante> lista=new DocenteService().listarCondiciones();
+			//PASO 2: crear objeto de la clase Gson
+			Gson gson=new Gson();
+			//PASO 3: generar json del arreglo "lista" en formato String
+			String json=gson.toJson(lista);
+			//PASO 4: mostrar el valor de la variable "json" en formato JSON verdadero
+			response.setContentType("application/json;charset=UTF-8");
+			PrintWriter salida=response.getWriter();
+			salida.println(json);
+}

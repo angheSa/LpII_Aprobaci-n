@@ -1,0 +1,30 @@
+package com.contrato.fabrica;
+
+import com.contrato.dao.MySqlBuscarSoliDAO;
+import com.contrato.dao.MySqlOficioDAO;
+import com.contrato.dao.MySqlSolicitanteDAO;
+import com.contrato.interfaces.BuscarSolicitanteDAO;
+import com.contrato.interfaces.OficioDAO;
+import com.contrato.interfaces.SolicitanteDAO;
+
+public class MySqlDAOFactory extends DAOFactory {
+
+	@Override
+	public SolicitanteDAO getSolicitanteDAO() {
+		// TODO Auto-generated method stub
+		return new MySqlSolicitanteDAO();
+	}
+
+	@Override
+	public OficioDAO getOficioDAO() {
+		// TODO Auto-generated method stub
+		return new MySqlOficioDAO();
+	}
+
+	@Override
+	public BuscarSolicitanteDAO getBuscarSolicitanteDAO() {
+		// TODO Auto-generated method stub
+		return new MySqlBuscarSoliDAO();
+	}
+
+}

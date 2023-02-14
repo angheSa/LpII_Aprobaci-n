@@ -1,0 +1,5 @@
+package com.contrato.controlador;
+
+public class ServletBuscarSoliJSON {
+
+}

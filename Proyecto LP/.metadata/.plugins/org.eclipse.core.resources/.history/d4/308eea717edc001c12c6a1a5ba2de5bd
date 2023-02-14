@@ -1,0 +1,32 @@
+package com.contrato.services;
+
+import java.util.List;
+
+import com.contrato.entidad.Solicitante;
+import com.contrato.fabrica.DAOFactory;
+import com.contrato.interfaces.SolicitanteDAO;
+
+public class SolicitanteService {
+	private DAOFactory fabrica=DAOFactory.getDAOFactory(1);
+	//PASO 2: definir dao a utilizar
+	private SolicitanteDAO objSolicitante=fabrica.getSolicitanteDAO();
+	
+	//métodos de servicio
+	
+	public int registrar(Solicitante bean) {
+		return objSolicitante.save(bean);
+	}
+	public int actualizar(Solicitante bean) {
+		return objSolicitante.update(bean);
+	}
+	public int eliminarPorId(int cod) {
+		return objSolicitante.delete(cod);
+	}
+	public Solicitante buscarPorId(int cod) {
+		return objSolicitante.findById(cod);
+	}
+	public List<Solicitante> listarTodos(){
+		return objSolicitante.listAll();
+	}
+	
+}

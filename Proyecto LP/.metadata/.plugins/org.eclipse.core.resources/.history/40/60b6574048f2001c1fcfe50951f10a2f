@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="CL2_Anghela Sanchez">
+        <property name="context-root" value="CL2_Anghela_Sanchez"/>
+        <property name="java-output-path" value="/CL2_Anghela Sanchez/build/classes"/>
+    </wb-module>
+</project-modules>

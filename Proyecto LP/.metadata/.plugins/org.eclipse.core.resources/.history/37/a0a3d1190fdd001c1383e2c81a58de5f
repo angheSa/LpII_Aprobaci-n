@@ -1,0 +1,5 @@
+package com.contrato.dao;
+
+public class MySqlBuscarSoliDAO {
+
+}

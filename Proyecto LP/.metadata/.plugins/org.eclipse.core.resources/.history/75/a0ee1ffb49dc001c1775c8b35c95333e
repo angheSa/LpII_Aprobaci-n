@@ -1,0 +1,73 @@
+package com.contrato.controlador;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.contrato.dao.MySqlSolicitanteDAO;
+import com.contrato.entidad.Solicitante;
+
+
+/**
+ * Servlet implementation class ServletSolicitante
+ */
+@WebServlet("/ServletSolicitante")
+public class ServletSolicitante extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
+	private MySqlSolicitanteDAO solicitanteDAO;
+           /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ServletSolicitante() {
+        super();
+        solicitanteDAO=new MySqlSolicitanteDAO();
+    }
+
+	/**
+	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//ACCIONES
+				String accion;
+				accion=request.getParameter("tipo");
+				if(accion.equals("LISTAR")) {
+					listarSolicitante(request,response);
+				}
+				else if(accion.equals("REGISTRAR")) {
+					registrarSolicitante(request,response);
+				}
+				else if(accion.equals("ELIMINAR")) {
+					eliminarSolicitante(request,response);
+				}
+
+	
+	}
+
+	private void eliminarSolicitante(HttpServletRequest request, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void registrarSolicitante(HttpServletRequest request, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void listarSolicitante(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Invocamos al método
+				List<Solicitante> dataSoli=solicitanteDAO.listAll();
+				//listSolicitante almacenará el arreglo de objetos data
+				request.setAttribute("listaSolicitantes",dataSoli);
+				//Direccionar a solicitante.jsp
+				request.getRequestDispatcher("/solicitante.jsp").forward(request, response);
+
+		
+	}
+
+}

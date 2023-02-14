@@ -1,0 +1,89 @@
+package com.auto.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.auto.entidad.Requerimiento;
+import com.auto.interfaces.RequerimientoDAO;
+import com.auto.utils.MySqlConexion;
+
+
+
+
+public class MySqlRequerimientoDAO implements RequerimientoDAO {
+
+	@Override
+	public List<Requerimiento> listAllByCredito(int codCredito) {
+		List<Requerimiento> lista=new ArrayList<Requerimiento>();
+		Requerimiento bean=null;
+		Connection cn=null;
+		PreparedStatement pstm=null;
+		ResultSet rs=null;
+		try {
+			cn=MySqlConexion.getConexion();
+			String sql="select e.cod_requerimiento, a.des_auto,c.nom_credito,e.pre_auto,e.can_auto,e.fecha_requerimiento, from tb_requerimiento e join tb_auto a on e.cod_auto=a.cod_auto"
+					+ "join tb_credito c on c.cod_credito=e.cod_credito where e.cod_credito=?";
+			pstm=cn.prepareStatement(sql);
+			pstm.setInt(1, codCredito);
+			rs=pstm.executeQuery();
+			while(rs.next()){
+				bean=new Requerimiento();
+				bean.setCodReque(rs.getInt(1));
+				bean.setNombreAuto(rs.getString(2));
+				bean.setNombreCredito(rs.getString(3));
+				bean.setPrecio(rs.getDouble(4));
+				bean.setCantidad(rs.getInt(5));
+				bean.setFecha(rs.getString(6));
+				lista.add(bean);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstm!=null) pstm.close();
+				if(cn!=null) cn.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return lista;
+	}
+
+	@Override
+	public int save(Requerimiento bean) {
+		int salida=-1;
+		Connection cn=null;
+		PreparedStatement pstm=null;
+		try {
+			cn=MySqlConexion.getConexion();
+			String sql="insert into tb_requerimiento values(null,?,?,?,?,?)";
+			pstm=cn.prepareStatement(sql);
+			pstm.setInt(1, bean.getCodAuto());
+			pstm.setInt(2, bean.getCodCredito());
+			pstm.setDouble(3, bean.getPrecio());
+			pstm.setInt(4, bean.getCantidad());
+			pstm.setString(5, bean.getFecha());
+		
+			salida=pstm.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(pstm!=null) pstm.close();
+				if(cn!=null) cn.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+		return salida;
+	}
+
+}

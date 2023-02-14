@@ -1,0 +1,91 @@
+package com.contrato.controlador;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.contrato.entidad.Expediente;
+import com.contrato.entidad.Oficio;
+import com.contrato.entidad.Solicitante;
+import com.contrato.services.ExpedienteService;
+import com.contrato.services.OficioService;
+
+/**
+ * Servlet implementation class ServletExpediente
+ */
+@WebServlet("/ServletExpediente")
+public class ServletExpediente extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private ExpedienteService servicioExpe;
+	private OficioService servicioOfi;
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ServletExpediente() {
+        super();
+        servicioExpe=new ExpedienteService();
+
+        servicioOfi=new OficioService();
+    }
+
+	/**
+	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//ACCIONES
+		String acciones;
+		acciones=request.getParameter("tipo");
+		if(acciones.equals("LISTAR")) {
+			listarExpediente(request,response);
+		}
+		else if(acciones.equals("REGISTRAR")) {
+			registrarExpediente(request,response);
+		}
+		else if(acciones.equals("ELIMINAR")) {
+			eliminarExpediente(request,response);
+		}
+	}
+
+	private void eliminarExpediente(HttpServletRequest request, HttpServletResponse response) {
+		//leer caja con atributo name "codigoEliminar"
+		String cod;
+		cod=request.getParameter("codigoEliminar");
+		//invocar al método delete y enviar la variable "cod"
+		int salida;
+		
+		salida=servicioExpe.eliminarPorId(Integer.parseInt(cod));
+		//validar
+		if(salida>0) {
+			
+			request.setAttribute("MENSAJE", "El oficio se eliminó");
+			listarOficios(request, response);
+		}
+		else {
+			request.setAttribute("MENSAJE", "Error en la eliminación del oficio");
+			listarOficios(request, response);
+		}
+		
+	}
+
+	private void registrarExpediente(HttpServletRequest request, HttpServletResponse response) {
+		
+	}
+
+	private void listarExpediente(HttpServletRequest request, HttpServletResponse response) {
+		//Invocamos al método
+		List<Expediente> data=servicioExpe.listExpedientes();
+		//listOficio almacenará el arreglo de objetos data
+		request.setAttribute("listExpediente", data);
+		List<Oficio> dataSoli=servicioOfi.listOficios();
+		//listSolicitante almacenará el arreglo de objetos data
+		request.setAttribute("buscarOficios",dataSoli);
+		//Direccionar a oficio.jsp
+		request.getRequestDispatcher("/expediente.jsp").forward(request, response);
+	}
+
+}

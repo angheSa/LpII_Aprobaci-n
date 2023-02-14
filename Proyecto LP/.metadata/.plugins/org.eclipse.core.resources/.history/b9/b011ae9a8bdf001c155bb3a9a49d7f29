@@ -1,0 +1,5 @@
+package com.contrato.entidad;
+
+public class Usuario {
+
+}

@@ -1,0 +1,10 @@
+package com.contrato.services;
+
+import com.contrato.fabrica.DAOFactory;
+import com.contrato.interfaces.SolicitanteDAO;
+
+public class SolicitanteService {
+	private DAOFactory fabrica=DAOFactory.getDAOFactory(1);
+	//PASO 2: definir dao a utilizar
+	private SolicitanteDAO objSolicitante=fabrica.getSolicitanteDAO();
+}

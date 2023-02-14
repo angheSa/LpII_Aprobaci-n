@@ -1,0 +1,150 @@
+package com.contrato.controlador;
+
+import java.io.IOException;
+import java.sql.Date;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.contrato.entidad.Oficio;
+import com.contrato.entidad.Solicitante;
+import com.contrato.services.OficioService;
+import com.contrato.services.SolicitanteService;
+
+/**
+ * Servlet implementation class ServletOficio
+ */
+@WebServlet("/ServletOficio")
+public class ServletOficio extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private OficioService servicioOfi;
+	private SolicitanteService servicioSoli;
+	  
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ServletOficio() {
+        super();
+        servicioOfi=new OficioService();
+        servicioSoli=new SolicitanteService();
+    }
+
+	/**
+	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+				//ACCIONES
+				String acciones;
+				acciones=request.getParameter("tipo");
+				if(acciones.equals("LISTAR")) {
+					listarOficios(request,response);
+				}
+				else if(acciones.equals("REGISTRAR")) {
+					registrarOficio(request,response);
+				}
+				else if(acciones.equals("ELIMINAR")) {
+					eliminarOficio(request,response);
+				}
+				
+	}
+
+	
+
+	private void eliminarOficio(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	//leer caja con atributo name "codigoEliminar"
+				String cod;
+				cod=request.getParameter("codigoEliminar");
+				//invocar al método delete y enviar la variable "cod"
+				int salida;
+				
+				salida=servicioOfi.eliminarPorId(cod);
+				//validar
+				if(salida>0) {
+					
+					request.setAttribute("MENSAJE", "El oficio se eliminó");
+					listarOficios(request, response);
+				}
+				else {
+					request.setAttribute("MENSAJE", "Error en la eliminación del oficio");
+					listarOficios(request, response);
+				}
+				 	
+		
+	}
+
+	private void registrarOficio(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+				//Creacion de variables y leer controles de oficio.jsp
+				String codOfi,fechOfi,asunOfi,nomSecre,codSoli,mens;
+				
+				codOfi=request.getParameter("codOficio");
+				fechOfi=request.getParameter("fechaOfi");
+				asunOfi=request.getParameter("asunOfi");
+				nomSecre=request.getParameter("nomSecre");
+				codSoli=request.getParameter("codSoli");
+				mens=request.getParameter("mensa");
+				//Creacion de objeto
+				Oficio bean=new Oficio();
+				//Set
+				
+				bean.setFechaOfi((fechOfi).toLocalDate());
+				bean.setAsuntoOfi(asunOfi);
+				bean.setNomSecre(nomSecre);
+				bean.setCodSoli(Integer.parseInt(codSoli));
+				bean.setMens(mens);
+				
+				//Realizar validacion de acuerdo al codigo Oficio
+		
+				if(codOfi=="0") {
+					
+					//invocar al método save
+					int resultado;
+					resultado=servicioOfi.registrar(bean);
+					//validar
+					if(resultado>0) {
+						request.setAttribute("MENSAJE", "Oficio registrado correctamente");
+						listarOficios(request, response);
+					}
+					else {
+						request.setAttribute("MENSAJE", "Error en el registro del oficio");
+						listarOficios(request, response);
+					}
+					
+				}
+				else {
+				
+					bean.setCodOfi(codOfi);
+				
+					//invocar al método update
+					int resultado;
+					resultado=servicioOfi.actualizar(bean);
+					//validar
+					if(resultado>0) {
+						request.setAttribute("MENSAJE", "El Oficio se actualizó");
+						listarOficios(request, response);
+					}
+					else {
+						request.setAttribute("MENSAJE", "Error en la actualización del oficio");
+						listarOficios(request, response);
+					}
+				}
+		
+	}
+
+	private void listarOficios(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+				//Invocamos al método
+				List<Oficio> data=servicioOfi.listOficios();
+				//listOficio almacenará el arreglo de objetos data
+				request.setAttribute("listOficio", data);
+				List<Solicitante> dataSoli=servicioSoli.listarTodos();
+				//listSolicitante almacenará el arreglo de objetos data
+				request.setAttribute("buscarSolicitantes",dataSoli);
+				//Direccionar a oficio.jsp
+				request.getRequestDispatcher("/oficio.jsp").forward(request, response);
+		
+	}
+
+}

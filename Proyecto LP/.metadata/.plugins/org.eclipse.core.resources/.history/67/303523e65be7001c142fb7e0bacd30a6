@@ -1,0 +1,92 @@
+package com.contrato.controlador;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.contrato.entidad.Solicitante;
+import com.contrato.utils.MySqlConexion;
+
+/**
+ * Servlet implementation class ServletPdf
+ */
+@WebServlet("/ServletPdf")
+public class ServletPdf extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ServletPdf() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+
+		response.setContentType("application/pdf");
+
+		Solicitante bean=null;
+		Connection cn=null;
+		PreparedStatement pstm=null;
+		ResultSet rs=null;
+		byte[] b =null;
+		try {
+			
+			//Conexion y acceder a los datos
+			int cod=Integer.parseInt(request.getParameter("codigo"));
+			cn=MySqlConexion.getConectar();
+			String sql="select archivoPdf from tb_solicitante where codSolicitante=?";
+			pstm=cn.prepareStatement(sql);
+			pstm.setInt(1, cod);
+			rs=pstm.executeQuery();
+			while(rs.next()) {
+				//Crear un objeto de Solicitante
+			/*	bean=new Solicitante();
+				bean.setCodSoli(rs.getInt(1));
+				bean.setNomSoli(rs.getString(2));
+				bean.setApeSoli(rs.getString(3));
+				bean.setDniSoli(rs.getInt(4));
+				bean.setDistrito(rs.getString(5));
+				bean.setDireccSoli(rs.getString(6));
+				bean.setCeluSoli(rs.getInt(7));
+				bean.setSexo(rs.getString(8));
+				bean.setTipoContrato(rs.getString(9));*/
+				b=rs.getBytes(1);
+				}
+			InputStream doc = new ByteArrayInputStream(b);
+			
+			int tamanoInput = doc.available();
+			byte[] docPdf = new byte[tamanoInput];
+			doc.read(docPdf, 0, tamanoInput);
+			
+			response.getOutputStream().write(docPdf);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstm!=null) pstm.close();
+				if(cn!=null) cn.close();
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			}
+		}
+	}
+
+}

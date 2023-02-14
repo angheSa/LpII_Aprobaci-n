@@ -1,0 +1,134 @@
+package com.contrato.controlador;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.contrato.dao.MySqlSolicitanteDAO;
+import com.contrato.entidad.Solicitante;
+
+
+/**
+ * Servlet implementation class ServletSolicitante
+ */
+@WebServlet("/ServletSolicitante")
+public class ServletSolicitante extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
+	private MySqlSolicitanteDAO solicitanteDAO;
+           /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ServletSolicitante() {
+        super();
+        solicitanteDAO=new MySqlSolicitanteDAO();
+    }
+
+	/**
+	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//ACCIONES
+				String accion;
+				accion=request.getParameter("tipo");
+				if(accion.equals("LISTAR")) {
+					listarSolicitante(request,response);
+				}
+				else if(accion.equals("REGISTRAR")) {
+					registrarSolicitante(request,response);
+				}
+				else if(accion.equals("ELIMINAR")) {
+					eliminarSolicitante(request,response);
+				}
+
+	
+	}
+
+	private void eliminarSolicitante(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//leer caja con atributo name "codigoEliminar"	
+				String cod;
+				cod=request.getParameter("codigoEliminar");
+				//invocar al método delete y enviar la variable "cod"
+				int salida;
+				salida=solicitanteDAO.delete(Integer.parseInt(cod));
+				//validar
+				if(salida>0) {
+					request.setAttribute("MENSAJE", "Docente eliminado correctamente");
+					listarSolicitante(request, response);
+				}
+				else {
+					request.setAttribute("MENSAJE", "Error en la eliminación");
+					listarSolicitante(request, response);
+				}
+				
+				
+
+		
+	}
+
+	private void registrarSolicitante(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Creacion de variables y leer controles de solicitante.jsp
+		String nombreSoli,apellidosSoli,dniSoli,distritoSoli,direccionSoli,celularSoli,sexoSoli,areaSoli,fechaSoli,expeSoli;
+	
+		
+		nombreSoli=request.getParameter("nomSoli");
+		apellidosSoli=request.getParameter("apeSoli");
+		dniSoli=request.getParameter("dniSoli");
+		distritoSoli=request.getParameter("disSoli");
+		direccionSoli=request.getParameter("direSoli");
+		celularSoli=request.getParameter("celSoli");
+		sexoSoli=request.getParameter("sexo");
+		areaSoli=request.getParameter("areSoli");
+		fechaSoli=request.getParameter("fechSoli");
+		expeSoli=request.getParameter("expeSoli");
+
+		//Creacion de objeto
+		Solicitante bean=new Solicitante();
+		//Set, no va codigo
+		bean.setNomSoli(nombreSoli);
+		bean.setApeSoli(apellidosSoli);
+		bean.setDniSoli(Integer.parseInt(dniSoli));
+		bean.setDistrito(distritoSoli);
+		bean.setDireccSoli(direccionSoli);
+		bean.setCeluSoli(Integer.parseInt(celularSoli));
+		bean.setSexo(sexoSoli);
+		bean.setArea(areaSoli);
+		bean.setFechaSoli(fechaSoli);
+		bean.setExpe(expeSoli);
+
+				//invocar al método save
+		int resultado;
+		resultado=solicitanteDAO.save(bean);
+				//validar
+				if(resultado>0) {
+					
+					request.setAttribute("MENSAJE", "Solicitante registrado correctamente");
+					listarSolicitante(request, response);
+				}
+				else {
+					
+					
+					
+				}
+
+
+		
+	}
+
+	private void listarSolicitante(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Invocamos al método
+				List<Solicitante> dataSoli=solicitanteDAO.listAll();
+				//listSolicitante almacenará el arreglo de objetos data
+				request.setAttribute("listaSolicitantes",dataSoli);
+				//Direccionar a solicitante.jsp
+				request.getRequestDispatcher("/solicitante.jsp").forward(request, response);
+
+		
+	}
+
+}

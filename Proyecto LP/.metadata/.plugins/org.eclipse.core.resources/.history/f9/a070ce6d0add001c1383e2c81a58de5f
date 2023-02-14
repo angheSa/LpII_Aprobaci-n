@@ -1,0 +1,9 @@
+package com.contrato.interfaces;
+
+import java.util.List;
+
+import com.contrato.entidad.Solicitante;
+
+public interface BuscarSolicitante {
+	public List<Solicitante> listAll();
+}
